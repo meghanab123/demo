@@ -26,7 +26,7 @@ package selenium;
 			driver.get("https://meralda.scalenext.io/user/register");
 			wait.until(ExpectedConditions.titleIs("Meralda || Register"));
 			
-			//register("test", "admin","testadmin1@email.com","8390567409", "password@1");
+			register("test", "admin","testadmin1@email.com","8390567409", "password@1");
 			login("testadmin1@email.com","password@1" );
 		}
 
