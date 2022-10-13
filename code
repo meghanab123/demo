@@ -1,0 +1,58 @@
+package selenium;
+
+	import java.time.Duration;
+	import org.openqa.selenium.By;
+	import org.openqa.selenium.JavascriptExecutor;
+	import org.openqa.selenium.WebDriver;
+	import org.openqa.selenium.WebElement;
+	import org.openqa.selenium.chrome.ChromeDriver;
+	import org.openqa.selenium.support.ui.ExpectedConditions;
+	import org.openqa.selenium.support.ui.WebDriverWait;
+
+	public class RegisterAndLogin {
+
+		static WebDriver driver;
+		static JavascriptExecutor js;
+		static WebDriverWait wait;
+		
+		public static void main(String[] args)  {
+			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+			driver= new ChromeDriver();
+			js= (JavascriptExecutor) driver;
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+
+			driver.get("https://meralda.scalenext.io/user/register");
+			wait.until(ExpectedConditions.titleIs("Meralda || Register"));
+			
+			//register("test", "admin","testadmin1@email.com","8390567409", "password@1");
+			login("testadmin1@email.com","password@1" );
+		}
+
+			public static void register(String fistName, String lastName, String emailId, String mobileNo, String password)  {
+				driver.findElement(By.name("first_name")).sendKeys(fistName);
+				driver.findElement(By.name("last_name")).sendKeys(lastName);
+				driver.findElement(By.xpath("//input[@name='first_name']/../../following-sibling::div/input[@name='email']")).sendKeys(emailId);
+				driver.findElement(By.name("mobile")).sendKeys(mobileNo);
+				WebElement birthOfDate=driver.findElement(By.name("date"));
+				js.executeScript("arguments[0].value='1990-10-20'", birthOfDate );
+				driver.findElement(By.name("password")).sendKeys(password);
+				driver.findElement(By.name("password_confirmation")).sendKeys(password);
+				WebElement registerBtn = driver.findElement(By.xpath("//button[(text()='Register')]"));
+				js.executeScript("arguments[0].click()", registerBtn);	
+			}
+			
+			public static void login(String username, String password)  {
+				WebElement loginBtn = driver.findElement(By.xpath("//a[text()='Login']"));
+				js.executeScript("arguments[0].click()", loginBtn);
+				wait.until(ExpectedConditions.titleIs("Meralda || Login"));
+				driver.findElement(By.name("username")).sendKeys(username);
+				driver.findElement(By.name("password")).sendKeys(password);
+				WebElement loginBtn1=driver.findElement(By.xpath("//button[text()='Login']"));
+				js.executeScript("arguments[0].click()",loginBtn1);	
+
+				
+			}
+			
+	}
